@@ -43,6 +43,8 @@ main.obj: ../driverlib/timer_b.h
 main.obj: ../driverlib/eusci_b_spi.h
 main.obj: ../driverlib/driverlib.h
 main.obj: ../hal_LCD.h
+main.obj: ../api/lcd.h
+main.obj: /Users/simon/workspace/ece298/ECE298_Project/hal_LCD.h
 
 ../main.c: 
 ../main.h: 
@@ -87,3 +89,5 @@ main.obj: ../hal_LCD.h
 ../driverlib/eusci_b_spi.h: 
 ../driverlib/driverlib.h: 
 ../hal_LCD.h: 
+../api/lcd.h: 
+/Users/simon/workspace/ece298/ECE298_Project/hal_LCD.h: 
