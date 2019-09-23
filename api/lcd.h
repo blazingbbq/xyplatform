@@ -11,5 +11,6 @@
 #include "hal_LCD.h"
 
 void print(char *);
+void clear();
 
 #endif /* API_LCD_H_ */

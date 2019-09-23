@@ -22,3 +22,7 @@ void print(char *str) {
         showChar(str[i - 1], pos[5 - length + i]);
     }
 }
+
+void clear() {
+    clearLCD();
+}

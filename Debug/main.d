@@ -45,6 +45,7 @@ main.obj: ../driverlib/driverlib.h
 main.obj: ../hal_LCD.h
 main.obj: ../api/lcd.h
 main.obj: /Users/simon/workspace/ece298/ECE298_Project/hal_LCD.h
+main.obj: ../api/keypad.h
 
 ../main.c: 
 ../main.h: 
@@ -91,3 +92,4 @@ main.obj: /Users/simon/workspace/ece298/ECE298_Project/hal_LCD.h
 ../hal_LCD.h: 
 ../api/lcd.h: 
 /Users/simon/workspace/ece298/ECE298_Project/hal_LCD.h: 
+../api/keypad.h: 

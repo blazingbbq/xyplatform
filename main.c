@@ -2,6 +2,7 @@
 #include "driverlib/driverlib.h"
 #include "hal_LCD.h"
 #include "api/lcd.h"
+#include "api/keypad.h"
 
 /*
  * This project contains some code samples that may be useful.
@@ -50,7 +51,10 @@ void main(void)
     __enable_interrupt();
 
     //Business logic goes here
-    print("HELLO");
+    print("1");
+    scan_keypad();
+
+
 
 //    char buttonState = 0; //Current button press state (to allow edge detection)
 //    while(1) //Do this when you want an infinite loop of code
