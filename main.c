@@ -37,6 +37,8 @@ void main(void)
     Init_UART();    //Sets up an echo over a COM port
     Init_LCD();     //Sets up the LaunchPad LCD display
 
+    Init_KEYPAD();  //Sets up the keypad pins
+
      /*
      * The MSP430 MCUs have a variety of low power modes. They can be almost
      * completely off and turn back on only when an interrupt occurs. You can
@@ -51,7 +53,6 @@ void main(void)
     __enable_interrupt();
 
     //Business logic goes here
-    print("1");
     scan_keypad();
 
 
