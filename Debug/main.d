@@ -46,6 +46,11 @@ main.obj: ../hal_LCD.h
 main.obj: ../api/lcd.h
 main.obj: /Users/simon/workspace/ece298/ECE298_Project/hal_LCD.h
 main.obj: ../api/keypad.h
+main.obj: /Users/simon/workspace/ece298/ECE298_Project/driverlib/driverlib.h
+main.obj: /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_18.1.4.LTS/include/stdio.h
+main.obj: /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_18.1.4.LTS/include/_ti_config.h
+main.obj: /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_18.1.4.LTS/include/linkage.h
+main.obj: /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_18.1.4.LTS/include/stdarg.h
 
 ../main.c: 
 ../main.h: 
@@ -93,3 +98,8 @@ main.obj: ../api/keypad.h
 ../api/lcd.h: 
 /Users/simon/workspace/ece298/ECE298_Project/hal_LCD.h: 
 ../api/keypad.h: 
+/Users/simon/workspace/ece298/ECE298_Project/driverlib/driverlib.h: 
+/Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_18.1.4.LTS/include/stdio.h: 
+/Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_18.1.4.LTS/include/_ti_config.h: 
+/Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_18.1.4.LTS/include/linkage.h: 
+/Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_18.1.4.LTS/include/stdarg.h: 

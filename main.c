@@ -53,8 +53,21 @@ void main(void)
     __enable_interrupt();
 
     //Business logic goes here
-    scan_keypad();
-    print("ALL DONE");
+    print("START");
+    while (!anyKeyDown());
+    print("KEY PRESSED");
+
+    while (1) {
+        unsigned long int val = nextKeypadValue();
+        char str[16];
+
+        // Warning: does not print entire value, works great for values containing up to 5 digits
+        // Long int has at least 10 digits. (Max val: 4.2M)
+        sprintf(str, "VAL %d", (int) val);
+        print(str);
+
+        __delay_cycles(320000);
+    }
 
     /*
      * You can use the following code if you plan on only using interrupts
