@@ -2,7 +2,7 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-CG_TOOL_ROOT := /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_18.1.4.LTS
+CG_TOOL_ROOT := /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_19.6.0.STS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -168,14 +168,14 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 ECE298_Project.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: MSP430 Linker'
-	"/Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_18.1.4.LTS/bin/cl430" -vmspx --use_hw_mpy=none --advice:power="all" --advice:hw_config="all" --define=__MSP430FR4133__ -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 -z -m"ECE298_Project.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"/Applications/ti/ccsv8/ccs_base/msp430/include" -i"/Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_18.1.4.LTS/lib" -i"/Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_18.1.4.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="ECE298_Project_linkInfo.xml" --use_hw_mpy=none --rom_model -o "ECE298_Project.out" $(ORDERED_OBJS)
+	"/Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_19.6.0.STS/bin/cl430" -vmspx --use_hw_mpy=none --advice:power="all" --advice:hw_config="all" --define=__MSP430FR4133__ -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 -z -m"ECE298_Project.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"/Applications/ti/ccsv8/ccs_base/msp430/include" -i"/Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_19.6.0.STS/lib" -i"/Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_19.6.0.STS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="ECE298_Project_linkInfo.xml" --use_hw_mpy=none --rom_model -o "ECE298_Project.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 ECE298_Project.hex: $(EXE_OUTPUTS)
 	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo 'Invoking: MSP430 Hex Utility'
-	"/Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_18.1.4.LTS/bin/hex430" --memwidth=8 --romwidth=8 -o "ECE298_Project.hex" $(EXE_OUTPUTS__QUOTED)
+	"/Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_19.6.0.STS/bin/hex430" --memwidth=8 --romwidth=8 -o "ECE298_Project.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 
