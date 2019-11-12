@@ -3,6 +3,7 @@
 #include "hal_LCD.h"
 #include "api/lcd.h"
 #include "api/keypad.h"
+#include "api/stepper.h"
 
 /*
  * This project contains some code samples that may be useful.
@@ -30,11 +31,11 @@ void main(void)
     WDT_A_hold(WDT_A_BASE);
 
     // Initializations - see functions for more detail
+//    Init_PWM();     //Sets up a PWM output
+//    Init_ADC();     //Sets up the ADC to sample
+//    Init_UART();    //Sets up an echo over a COM port
     Init_GPIO();    //Sets all pins to output low as a default
-    Init_PWM();     //Sets up a PWM output
-    Init_ADC();     //Sets up the ADC to sample
     Init_Clock();   //Sets up the necessary system clocks
-    Init_UART();    //Sets up an echo over a COM port
     Init_LCD();     //Sets up the LaunchPad LCD display
 
     Init_KEYPAD();  //Sets up the keypad pins
@@ -52,33 +53,73 @@ void main(void)
     //All done initializations - turn interrupts back on.
     __enable_interrupt();
 
-    //Business logic goes here
-    print("START");
-    while (!anyKeyDown());
-    print("KEY PRESSED");
+    // Initialize motors
+    uint16_t limPins[2] = {GPIO_PIN7, GPIO_PIN6};
+    uint8_t limPorts[2] = {GPIO_PORT_P1, GPIO_PORT_P1};
+    uint16_t stepperPins[4] = {GPIO_PIN1, GPIO_PIN1, GPIO_PIN0, GPIO_PIN7};
+    uint8_t stepperPorts[4] = {GPIO_PORT_P8, GPIO_PORT_P1, GPIO_PORT_P1, GPIO_PORT_P2};
 
+    uint16_t limPins2[2] = {GPIO_PIN0, GPIO_PIN2};
+    uint8_t limPorts2[2] = {GPIO_PORT_P5, GPIO_PORT_P5};
+    uint16_t stepperPins2[4] = {GPIO_PIN0, GPIO_PIN1, GPIO_PIN5, GPIO_PIN2};
+    uint8_t stepperPorts2[4] = {GPIO_PORT_P8, GPIO_PORT_P5, GPIO_PORT_P2, GPIO_PORT_P8};
+
+    stepper motor;
+    motor = initStepper(stepperPorts, stepperPins, limPorts, limPins);
+    setSpeed(&motor, 5);
+
+    stepper motor2;
+    motor2 = initStepper(stepperPorts2, stepperPins2, limPorts2, limPins2);
+    setSpeed(&motor2, 5);
+
+    // Calibrate motors
+    int maxRangeX = 0;
+    int maxRangeY = 0;
+
+    // Move back to origin
+    setTarget(&motor, maxDest);
+    setTarget(&motor2, maxDest);
+    // Step to origin
+
+    // User mode
     while (1) {
-        unsigned long int val = nextKeypadValue();
+        // Get coordinates
+        int coords[10];
+        int i;
+        for(i = 0; i < 10; i++) {
+            coords[i] = nextKeypadValue();
+        }
+
+        // Wait for user input to start movement
+        print("PRESS ANY KEY TO START");
+        while (!anyKeyDown());
+
+        // Movement mode
         char str[16];
+//        while (next coordinate available) {
+//            if (anyKeyDown()) {
+//                break;
+//            }
+//
+//            while (not at dest x or y) {
+//                // Step x
+//
+//                // Step y
+//
+//                // Display progress
+//                sprintf(str,
+//                    "X%dY%d",
+//                    (int) (getLocation - initialPosX) / (getTarget - initialPosX) * 100,
+//                    (int) (getLocation - initialPosY) / (getTarget - initialPosY) * 100);
+//                print(str);
+//            }
+//        }
 
-        // Warning: does not print entire value, works great for values containing up to 5 digits
-        // Long int has at least 10 digits. (Max val: 4.2M)
-        sprintf(str, "VAL %d", (int) val);
-        print(str);
-
-        __delay_cycles(320000);
+        // Return to origin
+        setTarget(&motor, maxDest);
+        setTarget(&motor2, maxDest);
+        // Step to origin
     }
-
-    /*
-     * You can use the following code if you plan on only using interrupts
-     * to handle all your system events since you don't need any infinite loop of code.
-     *
-     * //Enter LPM0 - interrupts only
-     * __bis_SR_register(LPM0_bits);
-     * //For debugger to let it know that you meant for there to be no more code
-     * __no_operation();
-    */
-
 }
 
 void Init_GPIO(void)

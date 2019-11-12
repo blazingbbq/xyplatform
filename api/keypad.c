@@ -29,6 +29,7 @@ unsigned long int nextKeypadValue() {
         if (curr == BH_VAL) {
             break;
         } else if (curr == BA_VAL && curr != prev) {
+            // TODO: Make number negative if nothing input yet, otherwise keep current backspace behavior
             val /= 10;
         } else if (curr && curr != prev) {
             val = (val * 10) + (curr % 10);

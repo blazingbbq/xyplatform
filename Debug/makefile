@@ -12,6 +12,7 @@ ORDERED_OBJS += \
 "./main.obj" \
 "./api/keypad.obj" \
 "./api/lcd.obj" \
+"./api/stepper.obj" \
 "./driverlib/adc.obj" \
 "./driverlib/crc.obj" \
 "./driverlib/cs.obj" \
@@ -182,8 +183,8 @@ ECE298_Project.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "hal_LCD.obj" "main.obj" "api/keypad.obj" "api/lcd.obj" "driverlib/adc.obj" "driverlib/crc.obj" "driverlib/cs.obj" "driverlib/ecomp.obj" "driverlib/eusci_a_spi.obj" "driverlib/eusci_a_uart.obj" "driverlib/eusci_b_i2c.obj" "driverlib/eusci_b_spi.obj" "driverlib/framctl.obj" "driverlib/gpio.obj" "driverlib/icc.obj" "driverlib/lcd_e.obj" "driverlib/mpy32.obj" "driverlib/pmm.obj" "driverlib/rtc.obj" "driverlib/sac.obj" "driverlib/sfr.obj" "driverlib/sysctl.obj" "driverlib/tia.obj" "driverlib/timer_a.obj" "driverlib/timer_b.obj" "driverlib/tlv.obj" "driverlib/wdt_a.obj" 
-	-$(RM) "hal_LCD.d" "main.d" "api/keypad.d" "api/lcd.d" "driverlib/adc.d" "driverlib/crc.d" "driverlib/cs.d" "driverlib/ecomp.d" "driverlib/eusci_a_spi.d" "driverlib/eusci_a_uart.d" "driverlib/eusci_b_i2c.d" "driverlib/eusci_b_spi.d" "driverlib/framctl.d" "driverlib/gpio.d" "driverlib/icc.d" "driverlib/lcd_e.d" "driverlib/mpy32.d" "driverlib/pmm.d" "driverlib/rtc.d" "driverlib/sac.d" "driverlib/sfr.d" "driverlib/sysctl.d" "driverlib/tia.d" "driverlib/timer_a.d" "driverlib/timer_b.d" "driverlib/tlv.d" "driverlib/wdt_a.d" 
+	-$(RM) "hal_LCD.obj" "main.obj" "api/keypad.obj" "api/lcd.obj" "api/stepper.obj" "driverlib/adc.obj" "driverlib/crc.obj" "driverlib/cs.obj" "driverlib/ecomp.obj" "driverlib/eusci_a_spi.obj" "driverlib/eusci_a_uart.obj" "driverlib/eusci_b_i2c.obj" "driverlib/eusci_b_spi.obj" "driverlib/framctl.obj" "driverlib/gpio.obj" "driverlib/icc.obj" "driverlib/lcd_e.obj" "driverlib/mpy32.obj" "driverlib/pmm.obj" "driverlib/rtc.obj" "driverlib/sac.obj" "driverlib/sfr.obj" "driverlib/sysctl.obj" "driverlib/tia.obj" "driverlib/timer_a.obj" "driverlib/timer_b.obj" "driverlib/tlv.obj" "driverlib/wdt_a.obj" 
+	-$(RM) "hal_LCD.d" "main.d" "api/keypad.d" "api/lcd.d" "api/stepper.d" "driverlib/adc.d" "driverlib/crc.d" "driverlib/cs.d" "driverlib/ecomp.d" "driverlib/eusci_a_spi.d" "driverlib/eusci_a_uart.d" "driverlib/eusci_b_i2c.d" "driverlib/eusci_b_spi.d" "driverlib/framctl.d" "driverlib/gpio.d" "driverlib/icc.d" "driverlib/lcd_e.d" "driverlib/mpy32.d" "driverlib/pmm.d" "driverlib/rtc.d" "driverlib/sac.d" "driverlib/sfr.d" "driverlib/sysctl.d" "driverlib/tia.d" "driverlib/timer_a.d" "driverlib/timer_b.d" "driverlib/tlv.d" "driverlib/wdt_a.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

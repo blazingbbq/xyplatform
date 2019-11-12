@@ -52,6 +52,8 @@ main.obj: /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_19.6.0.STS/include
 main.obj: /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_19.6.0.STS/include/_ti_config.h
 main.obj: /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_19.6.0.STS/include/linkage.h
 main.obj: /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_19.6.0.STS/include/stdarg.h
+main.obj: ../api/stepper.h
+main.obj: /Users/simon/workspace/ece298/ECE298_Project/driverlib/driverlib.h
 
 ../main.c: 
 ../main.h: 
@@ -105,3 +107,5 @@ main.obj: /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_19.6.0.STS/include
 /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_19.6.0.STS/include/_ti_config.h: 
 /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_19.6.0.STS/include/linkage.h: 
 /Applications/ti/ccsv8/tools/compiler/ti-cgt-msp430_19.6.0.STS/include/stdarg.h: 
+../api/stepper.h: 
+/Users/simon/workspace/ece298/ECE298_Project/driverlib/driverlib.h: 
