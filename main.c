@@ -50,6 +50,8 @@ void main(void)
   int backY = 0;
   int max = 25000;
 
+  print("PRESS ANY KEY TO CALIBRATE");
+  while (!anyKeyDown()) ;
   print("CLBR8");
 
   setTarget(&motor, -max);
@@ -137,8 +139,7 @@ void main(void)
 
     // Movement mode
     char str[16];
-    int xState;
-    int yState;
+    int xState, yState, xProgress, yProgress;
     float initialX = 0;
     float initialY = 0;
     i = 0;
@@ -169,14 +170,24 @@ void main(void)
           break;
         }
         j = 0;
+
         // Display progress
-        sprintf(str, "%d%d",
-                (getTarget(motor) - initialX == 0)
-                    ? 100
-                    : (int)(((getLocation(motor) - initialX) / (getTarget(motor) - initialX)) * 100),
-                (getTarget(motor2) - initialY == 0)
-                    ? 100
-                    : (int)(((getLocation(motor2) - initialY) / (getTarget(motor2) - initialY)) * 100));
+        char *strPadding;
+        xProgress = (getTarget(motor) - initialX == 0)
+                        ? 100
+                        : (int) (((getLocation(motor) - initialX) / (getTarget(motor) - initialX)) * 100);
+        yProgress = (getTarget(motor2) - initialY == 0)
+                        ? 100
+                        : (int) (((getLocation(motor2) - initialY) / (getTarget(motor2) - initialY)) * 100);
+
+        if (yProgress < 10)
+            strPadding = "  ";
+        else if (yProgress < 100)
+            strPadding = " ";
+        else
+            strPadding = "";
+
+        sprintf(str, "%d%s%d", xProgress, strPadding, yProgress);
         print(str);
       }
       j++;
