@@ -45,8 +45,11 @@
 #include "main.h"
 
 // LCD memory map for numeric digits
-const char digit[10][2] =
+const char digit[13][2] =
 {
+    {0x01, 0x00},  /* "-" */
+    {0x10, 0x00},  /* "." */
+    {0x00, 0x28},  /* "/" */
     {0xFC, 0x28},  /* "0" LCD segments a+b+c+d+e+f+k+q */
     {0x60, 0x20},  /* "1" */
     {0xDB, 0x00},  /* "2" */
@@ -88,6 +91,13 @@ const char alphabetBig[26][2] =
     {0x00, 0xAA},  /* "X" */
     {0x00, 0xB0},  /* "Y" */
     {0x90, 0x28}   /* "Z" */
+};
+
+const char specialChar[3][2] =
+{
+    {0x00, 0x22},  /* "[" - Will appear as "<" */
+    {0x00, 0x82},  /* "\" */
+    {0x00, 0x88}   /* "]" - Will appear as ">" */
 };
 
 void Init_LCD()
@@ -174,15 +184,19 @@ void showChar(char c, int position)
         // Display space
         LCDMEMW[position/2] = 0;
     }
-    else if (c >= '0' && c <= '9')
+    else if (c >= '-' && c <= '9')
     {
         // Display digit
-        LCDMEMW[position/2] = digit[c-48][0] | (digit[c-48][1] << 8);
+        LCDMEMW[position/2] = digit[c-45][0] | (digit[c-45][1] << 8);
     }
     else if (c >= 'A' && c <= 'Z')
     {
         // Display alphabet
         LCDMEMW[position/2] = alphabetBig[c-65][0] | (alphabetBig[c-65][1] << 8);
+    }
+    else if (c >= '[' && c <= ']')
+    {
+        LCDMEMW[position/2] = specialChar[c-91][0] | (specialChar[c-91][1] << 8);
     }
     else
     {

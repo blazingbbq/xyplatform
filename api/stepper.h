@@ -20,6 +20,7 @@ typedef struct stepper {
     int minpin;         //min limit pin
     int maxport;        //max limit port
     int maxpin;         //max limit pin
+    int swap;           //Because we mounted a motor backwards
 } stepper;
 
 //Init and set functions.

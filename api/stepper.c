@@ -25,6 +25,7 @@ stepper initStepper(uint8_t *ports, uint16_t *pins, uint8_t *limitports, uint16_
     newStepper.minport = limitports[1];
     newStepper.maxpin = limitpins[0];
     newStepper.minpin = limitpins[1];
+    newStepper.swap = 1;
 
     return newStepper;
 }
@@ -62,7 +63,7 @@ int step(stepper *motor, int direction) {
         motor->time = 0;
 
     if (motor->currentDist != motor->targetDist) {
-        motor->stepState += direction;
+        motor->stepState += direction*motor->swap;
         motor->currentDist += direction;
 
         if (motor->stepState < 0)

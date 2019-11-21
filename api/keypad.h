@@ -19,8 +19,10 @@
 #define GPIO_COL_2 GPIO_PORT_P1, GPIO_PIN3
 #define GPIO_COL_3 GPIO_PORT_P1, GPIO_PIN5
 
-#define SAMPLES_REQUIRED 16
-#define ROW_SCAN_DELAY 16
+#define SAMPLES_REQUIRED 4
+#define ROW_SCAN_DELAY 8
+
+#define MAX_VAL_DIGITS 5
 
 #define B1_VAL 1
 #define B2_VAL 2
@@ -41,7 +43,7 @@ typedef struct {
 } keypad_state;
 
 void Init_KEYPAD(  );
-unsigned long int nextKeypadValue(  );
+int nextKeypadValue(  );
 int anyKeyDown(  );
 int getKeyDown( keypad_state* );
 void scanRow( unsigned int, keypad_state* );

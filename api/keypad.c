@@ -16,30 +16,53 @@ void Init_KEYPAD() {
     GPIO_setAsOutputPin(GPIO_MUX_ADDR_1);
 }
 
-unsigned long int nextKeypadValue() {
+int nextKeypadValue() {
     keypad_state keypad = { 0 };
-    unsigned long int val = 0;
-    int prev, curr = 0;
+    long val = 0;
+    int negation = 1;
+    int len = 0;
+    int prev, curr = getKeyDown(&keypad);
     char str[6];
+
+    // Prevent from registering keys that are down before function call
+    int i;
+    for (i = SAMPLES_REQUIRED; i >= 0; i--) {
+        prev = curr;
+        curr = getKeyDown(&keypad);
+    }
+
+    print("     0");
 
     while(1) {
         prev = curr;
         curr = getKeyDown(&keypad);
 
-        if (curr == BH_VAL) {
+        if (curr == prev) {
+            continue;
+        } else if (curr == BH_VAL) {
             break;
-        } else if (curr == BA_VAL && curr != prev) {
-            // TODO: Make number negative if nothing input yet, otherwise keep current backspace behavior
-            val /= 10;
-        } else if (curr && curr != prev) {
+        } else if (curr == BA_VAL) {
+            // Make number negative if nothing input yet, otherwise backspace
+            if (val == 0)
+                negation *= -1;
+            else {
+                len = (len > 0) ? len - 1 : 0;
+                val /= 10;
+            }
+        } else if (curr) {
+            if (len >= MAX_VAL_DIGITS)
+                val /= 10;
+            else
+                len += 1;
+
             val = (val * 10) + (curr % 10);
         }
 
-        sprintf(str, "%d DWN", curr);
+        sprintf(str, "%c%d", (negation > 0) ? ' ' : '-', val);
         print(str);
     }
 
-    return val;
+    return val * negation;
 }
 
 int anyKeyDown() {

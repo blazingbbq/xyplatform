@@ -62,8 +62,9 @@
 #define LCDBMEMW ((int*)LCDBMEM)
 #endif
 
-extern const char digit[10][2];
+extern const char digit[13][2];
 extern const char alphabetBig[26][2];
+extern const char specialChar[3][2];
 
 void Init_LCD(void);
 void displayScrollText(char*);
