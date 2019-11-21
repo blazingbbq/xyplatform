@@ -5,24 +5,7 @@
 #include "api/keypad.h"
 #include "api/stepper.h"
 
-/*
- * This project contains some code samples that may be useful.
- *
- */
-
-char ADCState = 0; //Busy state of the ADC
-int16_t ADCResult = 0; //Storage for the ADC conversion result
-
-void main(void)
-{
-    /*
-     * Functions with two underscores in front are called compiler intrinsics.
-     * They are documented in the compiler user guide, not the IDE or MCU guides.
-     * They are a shortcut to insert some assembly code that is not really
-     * expressible in plain C/C++. Google "MSP430 Optimizing C/C++ Compiler
-     * v18.12.0.LTS" and search for the word "intrinsic" if you want to know
-     * more.
-     * */
+void main(void) {
 
     //Turn off interrupts during initialization
     __disable_interrupt();
@@ -30,96 +13,185 @@ void main(void)
     //Stop watchdog timer unless you plan on using it
     WDT_A_hold(WDT_A_BASE);
 
-    // Initializations - see functions for more detail
-//    Init_PWM();     //Sets up a PWM output
-//    Init_ADC();     //Sets up the ADC to sample
-//    Init_UART();    //Sets up an echo over a COM port
     Init_GPIO();    //Sets all pins to output low as a default
     Init_Clock();   //Sets up the necessary system clocks
     Init_LCD();     //Sets up the LaunchPad LCD display
 
     Init_KEYPAD();  //Sets up the keypad pins
 
-     /*
-     * The MSP430 MCUs have a variety of low power modes. They can be almost
-     * completely off and turn back on only when an interrupt occurs. You can
-     * look up the power modes in the Family User Guide under the Power Management
-     * Module (PMM) section. You can see the available API calls in the DriverLib
-     * user guide, or see "pmm.h" in the driverlib directory. Unless you
-     * purposefully want to play with the power modes, just leave this command in.
-     */
     PMM_unlockLPM5(); //Disable the GPIO power-on default high-impedance mode to activate previously configured port settings
 
+//    GPIO_setOutputLowOnPin(GPIO_MUX_ADDR_0);
+//    GPIO_setOutputLowOnPin(GPIO_MUX_ADDR_1);
+//
+//    while (1) {
+//        if (GPIO_getInputPinValue(GPIO_COL_1) == GPIO_INPUT_PIN_HIGH)
+//            print("COL 1 DWN");
+//        if (GPIO_getInputPinValue(GPIO_COL_2) == GPIO_INPUT_PIN_HIGH)
+//            print("COL 2 DWN");
+//        if (GPIO_getInputPinValue(GPIO_COL_3) == GPIO_INPUT_PIN_HIGH)
+//            print("COL 3 DWN");
+//
+//        __delay_cycles(ROW_SCAN_DELAY);
+//    }
+
     //All done initializations - turn interrupts back on.
-    __enable_interrupt();
+    //__enable_interrupt();
 
     // Initialize motors
-    uint16_t limPins[2] = {GPIO_PIN7, GPIO_PIN6};
-    uint8_t limPorts[2] = {GPIO_PORT_P1, GPIO_PORT_P1};
-    uint16_t stepperPins[4] = {GPIO_PIN1, GPIO_PIN1, GPIO_PIN0, GPIO_PIN7};
-    uint8_t stepperPorts[4] = {GPIO_PORT_P8, GPIO_PORT_P1, GPIO_PORT_P1, GPIO_PORT_P2};
-
-    uint16_t limPins2[2] = {GPIO_PIN0, GPIO_PIN2};
-    uint8_t limPorts2[2] = {GPIO_PORT_P5, GPIO_PORT_P5};
-    uint16_t stepperPins2[4] = {GPIO_PIN0, GPIO_PIN1, GPIO_PIN5, GPIO_PIN2};
-    uint8_t stepperPorts2[4] = {GPIO_PORT_P8, GPIO_PORT_P5, GPIO_PORT_P2, GPIO_PORT_P8};
-
-    stepper motor;
-    motor = initStepper(stepperPorts, stepperPins, limPorts, limPins);
-    setSpeed(&motor, 5);
-
-    stepper motor2;
-    motor2 = initStepper(stepperPorts2, stepperPins2, limPorts2, limPins2);
-    setSpeed(&motor2, 5);
-
-    // Calibrate motors
-    int maxRangeX = 0;
-    int maxRangeY = 0;
-
-    // Move back to origin
-    setTarget(&motor, maxDest);
-    setTarget(&motor2, maxDest);
-    // Step to origin
-
-    // User mode
+//    uint16_t limPins[2] = {GPIO_PIN7, GPIO_PIN6};
+//    uint8_t limPorts[2] = {GPIO_PORT_P1, GPIO_PORT_P1};
+//    uint16_t stepperPins[4] = {GPIO_PIN1, GPIO_PIN1, GPIO_PIN0, GPIO_PIN7};
+//    uint8_t stepperPorts[4] = {GPIO_PORT_P8, GPIO_PORT_P1, GPIO_PORT_P1, GPIO_PORT_P2};
+//
+//    uint16_t limPins2[2] = {GPIO_PIN0, GPIO_PIN2};
+//    uint8_t limPorts2[2] = {GPIO_PORT_P5, GPIO_PORT_P5};
+//    uint16_t stepperPins2[4] = {GPIO_PIN0, GPIO_PIN1, GPIO_PIN5, GPIO_PIN2};
+//    uint8_t stepperPorts2[4] = {GPIO_PORT_P8, GPIO_PORT_P5, GPIO_PORT_P2, GPIO_PORT_P8};
+//
+//    stepper motor;
+//    motor = initStepper(stepperPorts, stepperPins, limPorts, limPins);
+//    setSpeed(&motor, 1);
+//
+//     stepper motor2;
+//    motor2 = initStepper(stepperPorts2, stepperPins2, limPorts2, limPins2);
+//    setSpeed(&motor2, 1);
+//
+//    // Calibrate motors
+//    int maxRangeX = 0;
+//  int backX = 0;
+//  int maxRangeY = 0;
+//  int backY = 0;
+//  int max = 25000;
+//
+//  print("BEGIN");
+//
+//  setTarget(&motor, -max);
+//  setTarget(&motor2, -max);
+//  while(backX != 2 || backY != 2) {
+//      __delay_cycles(1);
+//      if (drive(&motor) == -1) {
+//          if (backX != 2)
+//              backX++;
+//          if (backX == 1) {
+//              setDist(&motor, 0);
+//              setTarget(&motor, max);
+//          }
+//          if (backX == 2) {
+//              maxRangeX = getLocation(motor)/2;
+//              setDist(&motor, maxRangeX);
+//              setTarget(&motor, maxRangeX);
+//          }
+//      }
+//
+//      if (drive(&motor2) == -1) {
+//          if (backY != 2)
+//              backY++;
+//          if (backY == 1) {
+//              setDist(&motor2, 0);
+//              setTarget(&motor2, max);
+//          }
+//          if (backY == 2) {
+//              maxRangeY = getLocation(motor2)/2;
+//              setDist(&motor2, maxRangeY);
+//              setTarget(&motor2, maxRangeY);
+//          }
+//      }
+//  }
+//
+//    // Move back to origin
+//    setTarget(&motor, 0);
+//    setTarget(&motor2, 0);
+//  int xOrigin = 0;
+//  int yOrigin = 0;
+//  while (1) {
+//      __delay_cycles(1);
+//      // Step to origin
+//      xOrigin = drive(&motor);
+//      yOrigin = drive(&motor2);
+//      if (xOrigin == 1 && yOrigin == 1)
+//          break;
+//  }
+//
+//  print("INPUT");
+//
+//    // User mode
     while (1) {
         // Get coordinates
         int coords[10];
         int i;
+        char coord_out[1028];
         for(i = 0; i < 10; i++) {
             coords[i] = nextKeypadValue();
+            sprintf(coord_out, "VAL%c  %d", (i % 2) ? 'Y' : 'X', coords[i]);
+            print(coord_out);
         }
+
+        sprintf(coord_out, "%d %d %d %d %d %d %d %d %d %d",
+              coords[0], coords[1], coords[2], coords[3], coords[4],
+              coords[5], coords[6], coords[7], coords[8], coords[9]);
+        print(coord_out);
 
         // Wait for user input to start movement
         print("PRESS ANY KEY TO START");
         while (!anyKeyDown());
-
-        // Movement mode
-        char str[16];
-//        while (next coordinate available) {
-//            if (anyKeyDown()) {
-//                break;
-//            }
-//
-//            while (not at dest x or y) {
-//                // Step x
-//
-//                // Step y
-//
-//                // Display progress
-//                sprintf(str,
-//                    "X%dY%d",
-//                    (int) (getLocation - initialPosX) / (getTarget - initialPosX) * 100,
-//                    (int) (getLocation - initialPosY) / (getTarget - initialPosY) * 100);
-//                print(str);
-//            }
-//        }
-
-        // Return to origin
-        setTarget(&motor, maxDest);
-        setTarget(&motor2, maxDest);
-        // Step to origin
+        print("STARTING");
     }
+
+//        // Movement mode
+//        char str[16];
+//      int xState;
+//      int yState;
+//      float initialX = 0;
+//      float initialY = 0;
+//      i = 0;
+//      int j = 0;
+//      setTarget(&motor, coords[0]);
+//      setTarget(&motor2, coords[1]);
+//      while (i < 5) {
+//          __delay_cycles(1);
+//          xState = drive(&motor);
+//          yState = drive(&motor2);
+//          if (xState != 0 && yState != 0) {
+//              i++;
+//              if (i < 5) {
+//                  setTarget(&motor, coords[2*i]);
+//                  setTarget(&motor2, coords[2*i + 1]);
+//                  initialX = getLocation(motor);
+//                  initialY = getLocation(motor2);
+//                  clear();
+//              }
+//          }
+//          if (j == 100 || j == 0) {
+//              if (anyKeyDown()) {
+//                  break;
+//              }
+//              j = 0;
+//              // Display progress
+//              sprintf(str, "%d%d",
+//                  (getTarget(motor)  - initialX == 0)
+//                          ? 100
+//                          : (int)(((getLocation(motor)  -  initialX)/(getTarget(motor)  - initialX))*100),
+//                  (getTarget(motor2) - initialY == 0)
+//                          ? 100
+//                          : (int)(((getLocation(motor2) -  initialY)/(getTarget(motor2) - initialY))*100));
+//              print(str);
+//          }
+//            j++;
+//      }
+//
+//        // Return to origin
+//        setTarget(&motor, 0);
+//        setTarget(&motor2, 0);
+//        while (1) {
+//            __delay_cycles(1);
+//          // Step to origin
+//          xOrigin = drive(&motor);
+//          yOrigin = drive(&motor2);
+//          if (xOrigin && yOrigin)
+//              break;
+//      }
+//    }
 }
 
 void Init_GPIO(void)
@@ -184,161 +256,4 @@ void Init_Clock(void)
     CS_initClockSignal(CS_SMCLK, CS_DCOCLKDIV_SELECT, CS_CLOCK_DIVIDER_1);
     // Set MCLK = DCO with frequency divider of 1
     CS_initClockSignal(CS_MCLK, CS_DCOCLKDIV_SELECT, CS_CLOCK_DIVIDER_1);
-}
-
-/* UART Initialization */
-void Init_UART(void)
-{
-    /* UART: It configures P1.0 and P1.1 to be connected internally to the
-     * eSCSI module, which is a serial communications module, and places it
-     * in UART mode. This let's you communicate with the PC via a software
-     * COM port over the USB cable. You can use a console program, like PuTTY,
-     * to type to your LaunchPad. The code in this sample just echos back
-     * whatever character was received.
-     */
-
-    //Configure UART pins, which maps them to a COM port over the USB cable
-    //Set P1.0 and P1.1 as Secondary Module Function Input.
-    GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P1, GPIO_PIN1, GPIO_PRIMARY_MODULE_FUNCTION);
-    GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P1, GPIO_PIN0, GPIO_PRIMARY_MODULE_FUNCTION);
-
-    /*
-     * UART Configuration Parameter. These are the configuration parameters to
-     * make the eUSCI A UART module to operate with a 9600 baud rate. These
-     * values were calculated using the online calculator that TI provides at:
-     * http://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSP430BaudRateConverter/index.html
-     */
-
-    //SMCLK = 1MHz, Baudrate = 9600
-    //UCBRx = 6, UCBRFx = 8, UCBRSx = 17, UCOS16 = 1
-    EUSCI_A_UART_initParam param = {0};
-        param.selectClockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK;
-        param.clockPrescalar    = 6;
-        param.firstModReg       = 8;
-        param.secondModReg      = 17;
-        param.parity            = EUSCI_A_UART_NO_PARITY;
-        param.msborLsbFirst     = EUSCI_A_UART_LSB_FIRST;
-        param.numberofStopBits  = EUSCI_A_UART_ONE_STOP_BIT;
-        param.uartMode          = EUSCI_A_UART_MODE;
-        param.overSampling      = 1;
-
-    if(STATUS_FAIL == EUSCI_A_UART_init(EUSCI_A0_BASE, &param))
-    {
-        return;
-    }
-
-    EUSCI_A_UART_enable(EUSCI_A0_BASE);
-
-    EUSCI_A_UART_clearInterrupt(EUSCI_A0_BASE, EUSCI_A_UART_RECEIVE_INTERRUPT);
-
-    // Enable EUSCI_A0 RX interrupt
-    EUSCI_A_UART_enableInterrupt(EUSCI_A0_BASE, EUSCI_A_UART_RECEIVE_INTERRUPT);
-}
-
-/* EUSCI A0 UART ISR - Echoes data back to PC host */
-#pragma vector=USCI_A0_VECTOR
-__interrupt
-void EUSCIA0_ISR(void)
-{
-    uint8_t RxStatus = EUSCI_A_UART_getInterruptStatus(EUSCI_A0_BASE, EUSCI_A_UART_RECEIVE_INTERRUPT_FLAG);
-
-    EUSCI_A_UART_clearInterrupt(EUSCI_A0_BASE, RxStatus);
-
-    if (RxStatus)
-    {
-        EUSCI_A_UART_transmitData(EUSCI_A0_BASE, EUSCI_A_UART_receiveData(EUSCI_A0_BASE));
-    }
-}
-
-/* PWM Initialization */
-void Init_PWM(void)
-{
-    /*
-     * The internal timers (TIMER_A) can auto-generate a PWM signal without needing to
-     * flip an output bit every cycle in software. The catch is that it limits which
-     * pins you can use to output the signal, whereas manually flipping an output bit
-     * means it can be on any GPIO. This function populates a data structure that tells
-     * the API to use the timer as a hardware-generated PWM source.
-     *
-     */
-    //Generate PWM - Timer runs in Up-Down mode
-    param.clockSource           = TIMER_A_CLOCKSOURCE_SMCLK;
-    param.clockSourceDivider    = TIMER_A_CLOCKSOURCE_DIVIDER_1;
-    param.timerPeriod           = TIMER_A_PERIOD; //Defined in main.h
-    param.compareRegister       = TIMER_A_CAPTURECOMPARE_REGISTER_1;
-    param.compareOutputMode     = TIMER_A_OUTPUTMODE_RESET_SET;
-    param.dutyCycle             = HIGH_COUNT; //Defined in main.h
-
-    //PWM_PORT PWM_PIN (defined in main.h) as PWM output
-    GPIO_setAsPeripheralModuleFunctionOutputPin(PWM_PORT, PWM_PIN, GPIO_PRIMARY_MODULE_FUNCTION);
-}
-
-void Init_ADC(void)
-{
-    /*
-     * To use the ADC, you need to tell a physical pin to be an analog input instead
-     * of a GPIO, then you need to tell the ADC to use that analog input. Defined
-     * these in main.h for A9 on P8.1.
-     */
-
-    //Set ADC_IN to input direction
-    GPIO_setAsPeripheralModuleFunctionInputPin(ADC_IN_PORT, ADC_IN_PIN, GPIO_PRIMARY_MODULE_FUNCTION);
-
-    //Initialize the ADC Module
-    /*
-     * Base Address for the ADC Module
-     * Use internal ADC bit as sample/hold signal to start conversion
-     * USE MODOSC 5MHZ Digital Oscillator as clock source
-     * Use default clock divider of 1
-     */
-    ADC_init(ADC_BASE,
-             ADC_SAMPLEHOLDSOURCE_SC,
-             ADC_CLOCKSOURCE_ADCOSC,
-             ADC_CLOCKDIVIDER_1);
-
-    ADC_enable(ADC_BASE);
-
-    /*
-     * Base Address for the ADC Module
-     * Sample/hold for 16 clock cycles
-     * Do not enable Multiple Sampling
-     */
-    ADC_setupSamplingTimer(ADC_BASE,
-                           ADC_CYCLEHOLD_16_CYCLES,
-                           ADC_MULTIPLESAMPLESDISABLE);
-
-    //Configure Memory Buffer
-    /*
-     * Base Address for the ADC Module
-     * Use input ADC_IN_CHANNEL
-     * Use positive reference of AVcc
-     * Use negative reference of AVss
-     */
-    ADC_configureMemory(ADC_BASE,
-                        ADC_IN_CHANNEL,
-                        ADC_VREFPOS_AVCC,
-                        ADC_VREFNEG_AVSS);
-
-    ADC_clearInterrupt(ADC_BASE,
-                       ADC_COMPLETED_INTERRUPT);
-
-    //Enable Memory Buffer interrupt
-    ADC_enableInterrupt(ADC_BASE,
-                        ADC_COMPLETED_INTERRUPT);
-}
-
-//ADC interrupt service routine
-#pragma vector=ADC_VECTOR
-__interrupt
-void ADC_ISR(void)
-{
-    uint8_t ADCStatus = ADC_getInterruptStatus(ADC_BASE, ADC_COMPLETED_INTERRUPT_FLAG);
-
-    ADC_clearInterrupt(ADC_BASE, ADCStatus);
-
-    if (ADCStatus)
-    {
-        ADCState = 0; //Not busy anymore
-        ADCResult = ADC_getResults(ADC_BASE);
-    }
 }

@@ -30,6 +30,7 @@ void setDist(stepper *motor, int dist);
 
 //Actuate and get functions.
 int step(stepper *motor, int direction);
+int drive(stepper *motor);
 int getSpeed(stepper motor);
 int getLocation(stepper motor);
 int getTarget(stepper motor);

@@ -7,7 +7,7 @@ Description: Implementation of stepper.h.
 #include "stepper.h"
 
 stepper initStepper(uint8_t *ports, uint16_t *pins, uint8_t *limitports, uint16_t *limitpins) {
-    int i;
+    volatile int i;
     for (i = 0; i < sizeof(ports)/sizeof(ports[0]); i++)
         GPIO_setAsOutputPin(ports[i], pins[i]);
 
@@ -49,9 +49,9 @@ int step(stepper *motor, int direction) {
     GPIO_setAsInputPin(motor->maxport, motor->maxpin);
     GPIO_setAsInputPin(motor->minport, motor->minpin);
 
-    if (GPIO_getInputPinValue(motor->maxport, motor->maxpin))
+    if (GPIO_getInputPinValue(motor->maxport, motor->maxpin) && direction > 0)
         return -1;
-    if (GPIO_getInputPinValue(motor->minport, motor->minpin))
+    if (GPIO_getInputPinValue(motor->minport, motor->minpin) && direction < 0)
         return -1;
 
     if (motor->time < motor->speed) {
@@ -61,45 +61,54 @@ int step(stepper *motor, int direction) {
     else
         motor->time = 0;
 
-    motor->stepState += direction;
-    motor->currentDist += 1;
+    if (motor->currentDist != motor->targetDist) {
+        motor->stepState += direction;
+        motor->currentDist += direction;
 
-    if (motor->currentDist == motor->targetDist)
-        return 1;
+        if (motor->stepState < 0)
+            motor->stepState = 3;
+        if (motor->stepState > 3)
+            motor->stepState = 0;
 
-    if (motor->stepState < 0)
-        motor->stepState = 3;
-    if (motor->stepState > 3)
-        motor->stepState = 0;
-
-    switch (motor->stepState) {
-      case 0:  // 1000
-        GPIO_setOutputHighOnPin(motor->ports[0], motor->pins[0]);
-        GPIO_setOutputLowOnPin(motor->ports[1], motor->pins[1]);
-        GPIO_setOutputLowOnPin(motor->ports[2], motor->pins[2]);
-        GPIO_setOutputLowOnPin(motor->ports[3], motor->pins[3]);
-      break;
-      case 1:  // 0100
-        GPIO_setOutputLowOnPin(motor->ports[0], motor->pins[0]);
-        GPIO_setOutputHighOnPin(motor->ports[1], motor->pins[1]);
-        GPIO_setOutputLowOnPin(motor->ports[2], motor->pins[2]);
-        GPIO_setOutputLowOnPin(motor->ports[3], motor->pins[3]);
-      break;
-      case 2:  //0010
-        GPIO_setOutputLowOnPin(motor->ports[0], motor->pins[0]);
-        GPIO_setOutputLowOnPin(motor->ports[1], motor->pins[1]);
-        GPIO_setOutputHighOnPin(motor->ports[2], motor->pins[2]);
-        GPIO_setOutputLowOnPin(motor->ports[3], motor->pins[3]);
-      break;
-      case 3:  //0001
-        GPIO_setOutputLowOnPin(motor->ports[0], motor->pins[0]);
-        GPIO_setOutputLowOnPin(motor->ports[1], motor->pins[1]);
-        GPIO_setOutputLowOnPin(motor->ports[2], motor->pins[2]);
-        GPIO_setOutputHighOnPin(motor->ports[3], motor->pins[3]);
-      break;
+        switch (motor->stepState) {
+            case 0:  // 1000
+                GPIO_setOutputHighOnPin(motor->ports[0], motor->pins[0]);
+                GPIO_setOutputLowOnPin(motor->ports[1], motor->pins[1]);
+                GPIO_setOutputLowOnPin(motor->ports[2], motor->pins[2]);
+                GPIO_setOutputLowOnPin(motor->ports[3], motor->pins[3]);
+                break;
+            case 1:  // 0100
+                GPIO_setOutputLowOnPin(motor->ports[0], motor->pins[0]);
+                GPIO_setOutputHighOnPin(motor->ports[1], motor->pins[1]);
+                GPIO_setOutputLowOnPin(motor->ports[2], motor->pins[2]);
+                GPIO_setOutputLowOnPin(motor->ports[3], motor->pins[3]);
+                break;
+            case 2:  //0010
+                GPIO_setOutputLowOnPin(motor->ports[0], motor->pins[0]);
+                GPIO_setOutputLowOnPin(motor->ports[1], motor->pins[1]);
+                GPIO_setOutputHighOnPin(motor->ports[2], motor->pins[2]);
+                GPIO_setOutputLowOnPin(motor->ports[3], motor->pins[3]);
+                break;
+            case 3:  //0001
+                GPIO_setOutputLowOnPin(motor->ports[0], motor->pins[0]);
+                GPIO_setOutputLowOnPin(motor->ports[1], motor->pins[1]);
+                GPIO_setOutputLowOnPin(motor->ports[2], motor->pins[2]);
+                GPIO_setOutputHighOnPin(motor->ports[3], motor->pins[3]);
+                break;
+        }
+        return 0;
     }
 
-    return 0;
+    return 1;
+}
+
+int drive(stepper *motor) {
+    int dir = -1;
+    if (getLocation(*motor) < getTarget(*motor))
+        dir = 1;
+    if (getLocation(*motor) == getTarget(*motor))
+            return 1;
+    return step(motor, dir);
 }
 
 int getSpeed(stepper motor) {
