@@ -109,6 +109,11 @@ void main(void)
       break;
   }
 
+  // Print max range
+  char rangeStr[32];
+  sprintf(rangeStr, "MAX RANGE [%d %d]", maxRangeX, maxRangeY);
+  print(rangeStr);
+
   while (1)
   {
     //  User mode
@@ -194,6 +199,7 @@ void main(void)
     }
 
     // Return to origin
+    print("MOVING TO ORIGIN");
     setTarget(&motor, 0);
     setTarget(&motor2, 0);
     while (1)

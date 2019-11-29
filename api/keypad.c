@@ -58,6 +58,7 @@ int nextKeypadValue() {
             val = (val * 10) + (curr % 10);
         }
 
+        clear();
         sprintf(str, "%c%d", (negation > 0) ? ' ' : '-', val);
         print(str);
     }
